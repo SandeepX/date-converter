@@ -3,6 +3,7 @@
 namespace MrIncognito\DateConverter\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use MrIncognito\DateConverter\Facades\DateConverter;
 use MrIncognito\DateConverter\Services\DateConverterService;
 
 class DateConverterServiceProvider extends ServiceProvider
@@ -12,11 +13,13 @@ class DateConverterServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->singleton('dateConverter', function ($app) {
             return new DateConverterService();
         });
+
+        $this->app->alias('dateConverter', DateConverter::class);
     }
 
     /**
@@ -24,6 +27,6 @@ class DateConverterServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Publish configuration or other bootstrapping logic if needed
+       //
     }
 }

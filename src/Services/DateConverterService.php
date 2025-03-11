@@ -11,74 +11,56 @@ class DateConverterService
     use DateConvertorTrait;
 
     /**
-     * @param int $day
-     * @return string
+     * Returns the day of the week in the specified language.
      *
-     * Return day of the week
+     * @param int $day The day number (1-7).
+     * @param string $type The language type ('ad' or 'bs').
+     * @return string The name of the day.
+     * @throws RuntimeException If the day is invalid.
      */
-    public function dayOfTheWeek(int $day): string
+    public function dayOfTheWeek(int $day, string $type): string
     {
-        return match ($day) {
-            1 => 'Sunday',
-            2 => 'Monday',
-            3 => 'Tuesday',
-            4 => 'Wednesday',
-            5 => 'Thursday',
-            6 => 'Friday',
-            7 => 'Saturday',
-            default => throw new RuntimeException('Invalid Day'),
-        };
+        $days = [
+            self::TYPE['AD'] => ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            self::TYPE['BS'] => ['आइतवार', 'सोमवार', 'मङ्गलवार', 'बुधवार', 'बिहिवार', 'शुक्रवार', 'शनिवार']
+        ];
+
+        if(!in_array($type, [self::TYPE['AD'], self::TYPE['BS']])) {
+            throw new RuntimeException("Invalid {$type}");
+        }
+
+        return $days[$type][$day - 1] ?? throw new RuntimeException('Invalid Day');
     }
 
     /**
      * @param int $m
-     * @return string
-     *
-     * Return English Month
-     */
-    public function englishMonth(int $m): string
-    {
-        return match ($m) {
-            1 => 'Jan',
-            2 => 'Feb',
-            3 => 'Mar',
-            4 => 'Apr',
-            5 => 'May',
-            6 => 'Jun',
-            7 => 'Jul',
-            8 => 'Aug',
-            9 => 'Sept',
-            10 => 'Oct',
-            11 => 'Nov',
-            12 => 'Dec',
-            default => throw new RuntimeException('Invalid English Month'),
-        };
-    }
-
-
-    /**
-     * @param int $m
+     * @param string $type 'ad' for English, 'bs' for Nepali
      * @return string
      */
-    public function nepaliMonth(int $m): string
+    public function month(int $m, string $type): string
     {
-        return match ($m) {
-            1 => "वैशाख",
-            2 => "ज्येष्ठ",
-            3 => "आषाढ़",
-            4 => "श्रावण",
-            5 => "भाद्र",
-            6 => "आश्विन",
-            7 => "कार्तिक",
-            8 => "मंसिर",
-            9 => "पौष",
-            10 => "माघ",
-            11 => "फाल्गुण",
-            12 => "चैत्र",
-            default => throw new RuntimeException('Invalid Nepali Month'),
-        };
-    }
+        $months = [
+            self::TYPE['AD'] => [
+                1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'May', 6 => 'Jun',
+                7 => 'Jul', 8 => 'Aug', 9 => 'Sept', 10 => 'Oct', 11 => 'Nov', 12 => 'Dec',
+            ],
+            self::TYPE['BS'] => [
+                1 => 'वैशाख', 2 => 'ज्येष्ठ', 3 => 'आषाढ़', 4 => 'श्रावण', 5 => 'भाद्र',
+                6 => 'आश्विन', 7 => 'कार्तिक', 8 => 'मंसिर', 9 => 'पौष', 10 => 'माघ',
+                11 => 'फाल्गुण', 12 => 'चैत्र',
+            ]
+        ];
 
+        if ($m < 1 || $m > 12) {
+            throw new RuntimeException("Invalid Month");
+        }
+
+        if (!isset($months[$type][$m])) {
+            throw new RuntimeException("Invalid $type Month");
+        }
+
+        return $months[$type][$m];
+    }
 
     /**
      * Calculates whether english year is leap year or not
@@ -91,7 +73,7 @@ class DateConverterService
     /**
      * @return string
      */
-    public function currentDateInBS(): string
+    public function currentYmdFormattedDateInBS(): string
     {
         try {
             $year = date('Y');
@@ -102,7 +84,6 @@ class DateConverterService
         } catch (Exception $e) {
             return $e->getMessage();
         }
-
     }
 
     /**
@@ -110,7 +91,7 @@ class DateConverterService
      * @param int $mm
      * @return array|string
      */
-    public function startAndEndBsDate(int $yy, int $mm): array|string
+    public function startAndEndAdDateFromBSYearAndMonth(int $yy, int $mm): array|string
     {
         try {
             $totalDaysInMonth = $this->totalDaysInBsMonth($yy, $mm);
@@ -136,7 +117,7 @@ class DateConverterService
     public function totalDaysInBsMonth(int $year, int $month): int
     {
         foreach ($this->bs as $value) {
-            if ($value[0] === $year) {
+            if ($value[0] == $year) {
                 return $value[$month] ?? 30;
             }
         }
@@ -146,17 +127,13 @@ class DateConverterService
     /**
      * @return array|string
      */
-    public function currentBSMonthAndYear(): array|string
+    public function currentBSDate(): array|string
     {
         try {
             $year = date('Y');
             $month = date('m');
             $day = date('d');
-            $nepaliDate = $this->engToNep($year, $month, $day);
-            return [
-                'year' => $nepaliDate['year'],
-                'month' => $nepaliDate['month'],
-            ];
+            return $this->engToNep($year, $month, $day);
         } catch (Exception $e) {
             return $e->getMessage();
         }
@@ -166,12 +143,12 @@ class DateConverterService
      * @param int $yy
      * @return array|string
      */
-    public function startAndEndBSDateOfYear(int $yy): array|string
+    public function startAndEndAdDateFromBsYear(int $year): array|string
     {
         try {
-            $totalDaysInMonth = $this->totalDaysInBSMonth($yy, self::END_MONTH);
-            $startDate = $this->nepToEng($yy, self::START_MONTH, self::START_DAY);
-            $endDate = $this->nepToEng($yy, self::END_MONTH, $totalDaysInMonth);
+            $totalDaysInMonth = $this->totalDaysInBSMonth($year, self::END_MONTH);
+            $startDate = $this->nepToEng($year, self::START_MONTH, self::START_DAY);
+            $endDate = $this->nepToEng($year, self::END_MONTH, $totalDaysInMonth);
             return [
                 'start_date' => $this->formatDate($startDate),
                 'end_date' => $this->formatDate($endDate),
@@ -191,7 +168,7 @@ class DateConverterService
         try {
             $date = $this->getDayMonthYearFromDate($date);
             $dateInAd = $this->nepToEng($date['year'], $date['month'], $date['day']);
-            return $dateInAd['year'] . '-' . $dateInAd['english_month'] . '-' . $dateInAd['date'];
+            return $this->formatDate($dateInAd);
         } catch (Exception $e) {
             return $e->getMessage();
         }
@@ -207,12 +184,10 @@ class DateConverterService
         try {
             $date = $this->getDayMonthYearFromDate($date);
             $dateInBs = $this->EngToNep($date['year'], $date['month'], $date['day']);
-            return $dateInBs['year'] . '-' . $dateInBs['nepali_month'] . '-' . $dateInBs['date'];
+            return $this->formatDate($dateInBs);
         } catch (Exception $e) {
             return $e->getMessage();
         }
 
     }
-
-
 }

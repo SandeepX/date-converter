@@ -102,8 +102,8 @@ trait DateConvertorTrait
     public array $nepDate = [
         'year' => '',
         'month' => '',
-        'date' => '',
         'day' => '',
+        'week_day' => '',
         'nepali_month' => '',
         'num_day' => ''
     ];
@@ -111,8 +111,8 @@ trait DateConvertorTrait
     public array $engDate = [
         'year' => '',
         'month' => '',
-        'date' => '',
         'day' => '',
+        'week_day' => '',
         'english_month' => '',
         'num_day' => ''
     ];
@@ -121,13 +121,18 @@ trait DateConvertorTrait
     public const START_DAY = 1;
     public const END_MONTH = 12;
 
+    public const TYPE = [
+        'AD' => 'ad',
+        'BS' => 'bs'
+    ];
+
     /**
      * @param $date
      * @return string
      */
     public function formatDate($date): string
     {
-        return $date['year'].'-'.$date['month'].'-'.$date['date'];
+        return $date['year'].'-'.$date['month'].'-'.$date['day'];
     }
 
     /**
@@ -263,11 +268,11 @@ trait DateConvertorTrait
             }
 
             return $this->nepDate = [
-                'year'    => $y,
-                'month'   => $m,
-                'date'    => $total_nDays,
-                'day'     => $this->dayOfTheWeek($day),
-                'nepali_month'  => $this->nepaliMonth($m),
+                'year' => $y,
+                'month' => $m,
+                'day' => $total_nDays,
+                'week_day' => $this->dayOfTheWeek($day, self::TYPE['BS']),
+                'full_month' => $this->month($m, self::TYPE['BS']),
                 'num_day' => $day
             ];
 
@@ -348,11 +353,11 @@ trait DateConvertorTrait
             }
 
             return $this->engDate = [
-                'year'    => $y,
-                'month'   => $m,
-                'date'    => $total_nDays,
-                'day'     => $this->dayOfTheWeek($day),
-                'english_month'  => $this->englishMonth($m),
+                'year' => $y,
+                'month' => $m,
+                'day' => $total_eDays,
+                'week_day' => $this->dayOfTheWeek($day, self::TYPE['AD']),
+                'full_month' => $this->month($m, self::TYPE['AD']),
                 'num_day' => $day
             ];
 

@@ -4,59 +4,14 @@ namespace MrIncognito\DateConverter\Services;
 
 use DateTime;
 use MrIncognito\DateConverter\Constants\CalenderData;
-use MrIncognito\DateConverter\Enum\DayTypeEnum;
 use MrIncognito\DateConverter\Helper\DateFormatHelper;
 use MrIncognito\DateConverter\Traits\DateConvertorTrait;
-use RuntimeException;
 use Exception;
+use RuntimeException;
 
 class DateConverterService
 {
     use DateConvertorTrait;
-
-    /**
-     * Returns the day of the week in the specified language.
-     *
-     * @param int $day The day number (1-7).
-     * @return string The name of the day.
-     * @throws RuntimeException If the day is invalid.
-     */
-    public function dayOfTheWeek(int $day, string $type): string
-    {
-        $days = [
-            DayTypeEnum::AD->value => CalenderData::AD_WEEK_DAYS,
-            DayTypeEnum::BS->value => CalenderData::BS_WEEK_DAYS
-        ];
-
-        if (!in_array($type, [DayTypeEnum::AD->value, DayTypeEnum::BS->value], true)) {
-            throw new RuntimeException("Invalid {$type}");
-        }
-
-        return $days[$type][$day - 1] ?? throw new RuntimeException('Invalid Day');
-    }
-
-    /**
-     * @param int $m
-     * @param string $type 'ad' for English, 'bs' for Nepali
-     * @return string
-     */
-    public function month(int $m, string $type): string
-    {
-        $months = [
-            DayTypeEnum::AD->value => CalenderData::AD_MONTHS,
-            DayTypeEnum::BS->value => CalenderData::BS_MONTHS
-        ];
-
-        if ($m < 1 || $m > 12) {
-            throw new RuntimeException("Invalid Month");
-        }
-
-        if (!isset($months[$type][$m])) {
-            throw new RuntimeException("Invalid $type Month");
-        }
-
-        return $months[$type][$m];
-    }
 
     /**
      * @param string $format
@@ -74,7 +29,6 @@ class DateConverterService
             return $e->getMessage();
         }
     }
-
 
     /**
      * @return array|string
@@ -224,5 +178,33 @@ class DateConverterService
         } catch (Exception $e) {
             return $e->getMessage();
         }
+    }
+
+    /**
+     * @param int $year
+     * @return float|int
+     */
+    public function daysInBsYear(int $year): float|int
+    {
+        $yearIndex = $this->getCalendarYearIndex($year);
+
+        if ($yearIndex === false) {
+            throw new RuntimeException('Year is out of range. Please provide a year between 2000-2090');
+        }
+
+        return array_sum(array_slice(CalenderData::NEPALI_DATE[$yearIndex], 1));
+    }
+
+    /**
+     * @param int $year
+     * @return float|int
+     */
+    public function daysInAdYear(int $year): float|int
+    {
+        if ($year < 1943 || $year > 2033) {
+            throw new RuntimeException('Year is out of range. Please provide a year between 1943-2033');
+        }
+
+        return ($year % 4 === 0 && $year % 100 !== 0) || ($year % 400 === 0) ? 366 : 365;
     }
 }

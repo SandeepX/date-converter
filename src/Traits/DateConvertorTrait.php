@@ -207,4 +207,55 @@ trait DateConvertorTrait
             'day' => (int)$parts[2],
         ];
     }
+
+    /**
+     * Returns the day of the week in the specified language.
+     *
+     * @param int $day The day number (1-7).
+     * @return string The name of the day.
+     * @throws RuntimeException If the day is invalid.
+     */
+    public function dayOfTheWeek(int $day, string $type): string
+    {
+        $days = [
+            DayTypeEnum::AD->value => CalenderData::AD_WEEK_DAYS,
+            DayTypeEnum::BS->value => CalenderData::BS_WEEK_DAYS
+        ];
+
+        if (!in_array($type, [DayTypeEnum::AD->value, DayTypeEnum::BS->value], true)) {
+            throw new RuntimeException("Invalid {$type}");
+        }
+
+        return $days[$type][$day - 1] ?? throw new RuntimeException('Invalid Day');
+    }
+
+    /**
+     * @param int $m
+     * @param string $type 'ad' for English, 'bs' for Nepali
+     * @return string
+     */
+    public function month(int $m, string $type): string
+    {
+        $months = [
+            DayTypeEnum::AD->value => CalenderData::AD_MONTHS,
+            DayTypeEnum::BS->value => CalenderData::BS_MONTHS
+        ];
+
+        if ($m < 1 || $m > 12) {
+            throw new RuntimeException("Invalid Month");
+        }
+
+        if (!isset($months[$type][$m])) {
+            throw new RuntimeException("Invalid $type Month");
+        }
+
+        return $months[$type][$m];
+    }
+
+    public function getCalendarYearIndex($year): bool|int
+    {
+        $calendarData = CalenderData::NEPALI_DATE;
+
+        return collect($calendarData)->search(fn ($data) => $data[0] === (int) $year);
+    }
 }

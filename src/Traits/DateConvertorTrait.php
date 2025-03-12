@@ -2,9 +2,9 @@
 
 namespace MrIncognito\DateConverter\Traits;
 
-use DayType;
 use InvalidArgumentException;
 use MrIncognito\DateConverter\Constants\CalenderData;
+use MrIncognito\DateConverter\Enum\DayTypeEnum;
 use MrIncognito\DateConverter\Helper\DateValidationHelper;
 use MrIncognito\DateConverter\Helper\DateFormatHelper;
 use RuntimeException;
@@ -94,9 +94,9 @@ trait DateConvertorTrait
             'year' => $y,
             'month' => $m,
             'day' => $total_nDays,
-            'week_day' => $this->dayOfTheWeek($day, DayType::BS->value),
-            'month_name' => $this->month($m, DayType::BS->value),
-            'num_day' => $day
+            'week_day' => $this->dayOfTheWeek($day, DayTypeEnum::BS->value),
+            'month_name' => $this->month($m, DayTypeEnum::BS->value),
+            'num_week_day' => $day
         ];
     }
 
@@ -181,9 +181,9 @@ trait DateConvertorTrait
             'year' => $y,
             'month' => $m,
             'day' => $total_eDays,
-            'week_day' => $this->dayOfTheWeek($day, DayType::AD->value),
-            'month_name' => $this->month($m, DayType::AD->value),
-            'num_day' => $day
+            'week_day' => $this->dayOfTheWeek($day, DayTypeEnum::AD->value),
+            'month_name' => $this->month($m, DayTypeEnum::AD->value),
+            'num_week_day' => $day
         ];
     }
 

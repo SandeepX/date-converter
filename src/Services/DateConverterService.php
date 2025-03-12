@@ -2,6 +2,7 @@
 
 namespace MrIncognito\DateConverter\Services;
 
+use DateTime;
 use MrIncognito\DateConverter\Constants\CalenderData;
 use MrIncognito\DateConverter\Enum\DayTypeEnum;
 use MrIncognito\DateConverter\Helper\DateFormatHelper;
@@ -111,15 +112,20 @@ class DateConverterService
     public function currentAdDateDetail(): array|string
     {
         try {
-            $year = date('Y');
-            $month = date('m');
-            $day = date('d');
-            return $this->toEnglishDate($year, $month, $day);
+            $dateTime = new DateTime();
+
+            return [
+                "year" => (int)$dateTime->format('Y'),
+                "month" => (int)$dateTime->format('n'),
+                "day" => (int)$dateTime->format('j'),
+                "week_day" => $dateTime->format('l'),
+                "month_name" => $dateTime->format('M'),
+                "num_week_day" => (int)$dateTime->format('N')
+            ];
         } catch (Exception $e) {
             return $e->getMessage();
         }
     }
-
 
     /**
      * @param int $yy
@@ -153,6 +159,13 @@ class DateConverterService
      */
     public function totalDaysInNepaliMonth(int $year, int $month): int
     {
+        if (!$year || $year < 2000 || $year > 2090) {
+            throw new \RuntimeException('Year must be provided and cannot be zero or more than 2090 or less than 2000.');
+        }
+
+        if (!$month || $month < 1 || $month > 12) {
+            throw new \RuntimeException('Month must be provided and must be in between 1 and 12.');
+        }
         foreach (CalenderData::NEPALI_DATE as $value) {
             if ($value[0] === $year) {
                 return $value[$month] ?? 30;

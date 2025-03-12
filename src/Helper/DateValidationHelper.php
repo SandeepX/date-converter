@@ -38,7 +38,7 @@ class DateValidationHelper
     /**
      * Check if date is with in nepali data range
      */
-    public static function isInRangeNep(int $yy, int $mm, int $dd): true|string
+    public static function isInRangeNep(int $yy, int $mm, int $dd): bool|string
     {
         try{
             if ($yy < 2000 || $yy > 2089) {

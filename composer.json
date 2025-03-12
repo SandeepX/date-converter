@@ -1,6 +1,6 @@
 {
     "name": "mr.incognito/date-converter",
-    "description": "The laravel package for converting AD date to BS Date",
+    "description": "The laravel package for converting AD date to BS Date and vice versa",
     "type": "library",
     "license": "MIT",
     "autoload": {
@@ -26,7 +26,8 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=8.0"
+        "php": ">=8.0",
+        "ext-ctype": "*"
     },
     "prefer-stable": true
 }

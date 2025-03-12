@@ -3,7 +3,7 @@
         'name' => 'mr.incognito/date-converter',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'c2121becccea68936900b7cf106e255dbfb28002',
+        'reference' => 'a4df3f6f7ce9c37101b52049704d93c328ed7be3',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'mr.incognito/date-converter' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'c2121becccea68936900b7cf106e255dbfb28002',
+            'reference' => 'a4df3f6f7ce9c37101b52049704d93c328ed7be3',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

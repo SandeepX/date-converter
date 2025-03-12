@@ -2,12 +2,12 @@
 
 namespace MrIncognito\DateConverter\Services;
 
-use DayType;
-use Exception;
 use MrIncognito\DateConverter\Constants\CalenderData;
+use MrIncognito\DateConverter\Enum\DayTypeEnum;
 use MrIncognito\DateConverter\Helper\DateFormatHelper;
 use MrIncognito\DateConverter\Traits\DateConvertorTrait;
 use RuntimeException;
+use Exception;
 
 class DateConverterService
 {
@@ -23,11 +23,11 @@ class DateConverterService
     public function dayOfTheWeek(int $day, string $type): string
     {
         $days = [
-            DayType::AD->value => CalenderData::AD_WEEK_DAYS,
-            DayType::BS->value => CalenderData::BS_WEEK_DAYS
+            DayTypeEnum::AD->value => CalenderData::AD_WEEK_DAYS,
+            DayTypeEnum::BS->value => CalenderData::BS_WEEK_DAYS
         ];
 
-        if (!in_array($type, [DayType::AD->value, DayType::BS->value], true)) {
+        if (!in_array($type, [DayTypeEnum::AD->value, DayTypeEnum::BS->value], true)) {
             throw new RuntimeException("Invalid {$type}");
         }
 
@@ -42,8 +42,8 @@ class DateConverterService
     public function month(int $m, string $type): string
     {
         $months = [
-            DayType::AD->value => CalenderData::AD_MONTHS,
-            DayType::BS->value => CalenderData::BS_MONTHS
+            DayTypeEnum::AD->value => CalenderData::AD_MONTHS,
+            DayTypeEnum::BS->value => CalenderData::BS_MONTHS
         ];
 
         if ($m < 1 || $m > 12) {

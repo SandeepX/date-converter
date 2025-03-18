@@ -27,7 +27,7 @@ trait DateConvertorTrait
         $leapMonth = array(31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 
         $def_eyy = 1944; // initial english date.
-        $def_nyy = 2000;
+        $def_nyy = 2000; // initial nepali date
         $def_nmm = 9;
         $def_ndd = 17 - 1; // initial nepali date.
         $total_eDays = 0;

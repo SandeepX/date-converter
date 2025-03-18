@@ -41,7 +41,7 @@ class DateValidationHelper
     public static function isInRangeNep(int $yy, int $mm, int $dd): bool|string
     {
         try{
-            if ($yy < 2000 || $yy > 2089) {
+            if ($yy < 2000 || $yy > 2090) {
                 throw new InvalidArgumentException('Error! year value can be between 2000-2089 only');
             }
 

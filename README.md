@@ -12,7 +12,7 @@ Follow the steps below to install the `mr.incognito/date-converter` package into
 Run the following command to add the package to your Laravel project:
 
 ```bash
-  composer require mr.incognito/date-converter --ignore-platform-reqs
+  composer require mr.incognito/date-converter
 ```
  
 ## Usage

@@ -13,9 +13,7 @@ class DateConverterServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton('dateConverter', function ($app) {
-            return new DateConverterService;
-        });
+        $this->app->singleton('dateConverter', fn($app) => new DateConverterService);
 
         $this->app->alias('dateConverter', DateConverter::class);
     }

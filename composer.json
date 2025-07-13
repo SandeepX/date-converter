@@ -46,13 +46,15 @@
         "pestphp/pest": "^2.0||^3.0",
         "pestphp/pest-plugin-laravel": "^2.4",
         "laravel/pint": "^1.20",
-        "orchestra/testbench": "^8.0 || ^9.0 ||^10.0"
+        "orchestra/testbench": "^8.0 || ^9.0 ||^10.0",
+        "rector/rector-laravel": "^2.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
         "test": "vendor/bin/pest",
-        "pint": "vendor/bin/pint"
+        "pint": "vendor/bin/pint",
+        "rector": "vendor/bin/rector"
     },
     "config": {
         "allow-plugins": {

@@ -10,13 +10,11 @@ class DateConverterServiceProvider extends ServiceProvider
 {
     /**
      * Register the service provider.
-     *
-     * @return void
      */
     public function register(): void
     {
         $this->app->singleton('dateConverter', function ($app) {
-            return new DateConverterService();
+            return new DateConverterService;
         });
 
         $this->app->alias('dateConverter', DateConverter::class);
@@ -27,6 +25,6 @@ class DateConverterServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-       //
+        //
     }
 }

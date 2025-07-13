@@ -1,8 +1,21 @@
 {
     "name": "mr.incognito/date-converter",
     "description": "The laravel package for converting AD date to BS Date and vice versa",
-    "type": "library",
+    "type": "laravel-package",
     "license": "MIT",
+    "keywords": [
+        "laravel",
+        "date converter",
+        "nepali date",
+        "english date",
+        "package",
+        "laravel-package",
+        "php",
+        "backend",
+        "developer-tool",
+        "laravel-toolkit",
+        "developer-helper"
+    ],
     "autoload": {
         "psr-4": {
             "MrIncognito\\DateConverter\\": "src/"
@@ -24,15 +37,22 @@
             "email": "sandeeppant024@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
-        "php": "^8.0 || ^8.1 || ^8.2",
+        "php": "^8.1|^8.2|^8.3|^8.4",
+        "illuminate/support": "^10.0|^11.0|^12.0",
         "ext-ctype": "*"
     },
-    "prefer-stable": true,
     "require-dev": {
-        "pestphp/pest": "^2.36",
-        "pestphp/pest-plugin-laravel": "^2.4"
+        "pestphp/pest": "^2.0||^3.0",
+        "pestphp/pest-plugin-laravel": "^2.4",
+        "laravel/pint": "^1.20",
+        "orchestra/testbench": "^8.0 || ^9.0 ||^10.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "pint": "vendor/bin/pint"
     },
     "config": {
         "allow-plugins": {

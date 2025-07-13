@@ -7,9 +7,6 @@ use InvalidArgumentException;
 class DateValidationHelper
 {
     /**
-     * @param int $yy
-     * @param int $mm
-     * @param int $dd
      * @return bool|string
      *
      * Check if the date range is valid for English dates.
@@ -40,7 +37,7 @@ class DateValidationHelper
      */
     public static function isInRangeNep(int $yy, int $mm, int $dd): bool|string
     {
-        try{
+        try {
             if ($yy < 2000 || $yy > 2090) {
                 throw new InvalidArgumentException('Error! year value can be between 2000-2089 only');
             }
@@ -54,10 +51,8 @@ class DateValidationHelper
             }
 
             return true;
-        }catch(InvalidArgumentException $e){
+        } catch (InvalidArgumentException $e) {
             return $e;
         }
     }
-
-
 }
